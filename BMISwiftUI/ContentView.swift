@@ -14,46 +14,63 @@ struct ContentView: View {
     @State private var clasifier:String = ""
 
     var body: some View {
-        VStack{
-            Text("IBM calculator").font(.title2)
-            TextField("Enter weight (in kilograms)", text: $weigth)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .border(.black)
+        ZStack {
+            Color.accentColor.opacity(0.5)
             
-            TextField("Enter height (in meters)", text: $height)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .border(.black)
-            
-            Button(action:{
-                let weight = Double(self.weigth)!
-                let height = Double(self.height)!
-                self.bmi = weight/(height * height)
-                
-                if self.bmi < 18.5 {
-                    clasifier = "Underweight"
-                } else if self.bmi < 24.9 {
-                    clasifier = "Healty weight"
-                } else if self.bmi < 29.9 {
-                    clasifier = "OverWeight"
-                } else {
-                    clasifier = "Obese"
-                }
-                
-            }){
-                Text("Calculate BMI")
-                    .padding()
-                    .foregroundColor(.white)
-                    .background(.blue)
-            }
-            Text("BMI: \(bmi,specifier: "%.1f"),\(clasifier)").font(.title).padding()
-                
+            VStack{
+                Text("BMI calculator").font(.title).foregroundColor(.black).padding(5)
 
-        }.padding(50)
+                 TextField("Enter weight (in kilograms)", text: $weigth)
+                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                     .border(.black)
+                     .padding(10)
+                 
+                 TextField("Enter height (in meters)", text: $height)
+                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                     .border(.black)
+                     .padding(10)
+                 
+                 Button(action:{
+                     let weight = Double(self.weigth)!
+                     let height = Double(self.height)!
+                     self.bmi = weight/(height * height)
+                     
+                     if self.bmi < 18.5 {
+                         clasifier = "Underweight"
+                     } else if self.bmi < 24.9 {
+                         clasifier = "Healty weight"
+                     } else if self.bmi < 29.9 {
+                         clasifier = "OverWeight"
+                     } else {
+                         clasifier = "Obese"
+                     }
+                     
+                 }){
+                     Text("Calculate BMI")
+                         .padding()
+                         .foregroundColor(.white)
+                         .background(.blue)
+                 }.padding(.bottom,20)
+                Text("BMI: \(bmi,specifier: "%.1f")").font(.title).padding(.bottom,10)
+                Text("Result: \(clasifier)").fontDesign(.rounded).fontWeight(.bold).padding(.bottom,10)
+                 
+                 
+             }.background(.gray)
+                .cornerRadius(20)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(.black, lineWidth: 5)
+                )
+                .padding(50)
+            
+        }.edgesIgnoringSafeArea(.all)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ZStack {
+            ContentView().environment(\.colorScheme,.light)
+        }
     }
 }
